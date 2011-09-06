@@ -1,0 +1,13 @@
+# Interface Jython Factory-----------
+
+A small utility for coercing Jython objects into Java objects.
+
+## Setup ----------------------------
+
+mvn clean install
+
+## Usage ----------------------------
+
+objectFactory = new JythonObjectFactory(TargetInterface.class, "pythonModuleName");
+jythonObject = (TargetInterface) objectFactory.createObject();
+jythonObject.foo();
