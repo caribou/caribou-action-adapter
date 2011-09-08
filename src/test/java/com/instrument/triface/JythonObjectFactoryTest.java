@@ -22,7 +22,7 @@ import org.python.core.PyTuple;
 import com.instrument.triface.interfaces.IMapMangler;
 
 /**
- * Simple tests for basic JythonObjectFactory funcitonality
+ * Simple tests for basic JythonObjectFactory functionality
  * 
  * @author eff
  *
@@ -36,7 +36,7 @@ public class JythonObjectFactoryTest {
 	public void setupFactory()
 	{
     	// set the system path so that our python class can be found...
-		Py.getSystemState().path.append(new PyString("src/main/python/"));
+		Py.getSystemState().path.append(new PyString("src/test/python/"));
 		
 		objectFactory = new JythonObjectFactory(IMapMangler.class, "MapMangler");
     	mangler = (IMapMangler) objectFactory.createObject();
