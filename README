@@ -1,6 +1,7 @@
-# Interface Jython Factory-----------
+# Interface Action Adapter-----------
 
-A small utility for coercing Jython objects into Java objects.
+Adapter utility for interface actions. Currently supports jython object
+coercion and jython -> clojure map conversion. 
 
 ## Setup ----------------------------
 
