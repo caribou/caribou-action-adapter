@@ -4,8 +4,11 @@ from clojure.lang import PersistentArrayMap
 from clojure.lang import PersistentVector
 
 #
-# utility class to wrap a java map, giving it 
-# python dict-like behavior.
+# wrapper class for clojure maps (IPersistantMap), 
+# provides native syntax emulation and dict-like behavior.
+#
+# The only reason this exists is that adding to a clojure
+# map via assoc is both fast and cheap.
 #
 class ClojureMap(dict):
     
@@ -82,11 +85,6 @@ class ClojureMap(dict):
     def __repr__(self):
         return repr(dict(self.items()))   
     
-    def getmap(self):
-        # convert some shit
-        for v in self:
-            if isinstance(self[v], PyDictionary):
-               self[v] = PersistentArrayMap.create(self[v])
-            if isinstance(self[v], PyList):
-               self[v] = PersistentVector.create(self[v])               
+    # return the underlying map
+    def getmap(self):             
         return self.data              

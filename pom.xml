@@ -1,47 +1,74 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.instrument.triface</groupId>
-  <artifactId>triface-action-adapter</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>com.instrument.triface</groupId>
+	<artifactId>triface-action-adapter</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>triface-action-adapter</name>
-  <url>http://maven.apache.org</url>
+	<name>triface-action-adapter</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.0</version>
-      <scope>test</scope>
-    </dependency>
-	<dependency>
-      <groupId>org.python</groupId>
-      <artifactId>jython-standalone</artifactId>
-      <version>2.5.2</version>
-    </dependency>
-	<dependency>
-		<groupId>org.clojure</groupId>
-		<artifactId>clojure</artifactId>
-		<version>1.2.1</version>
-	</dependency>
-  </dependencies>
-	  
-  <build>
-  		<resources>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.clojure</groupId>
+			<artifactId>clojure</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.python</groupId>
+			<artifactId>jython-standalone</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jruby</groupId>
+			<artifactId>jruby-complete</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+		<dependency>
+			<groupId>rhino</groupId>
+			<artifactId>js</artifactId>
+			<version>1.7R2</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
 			<resource>
 				<directory>${basedir}/lib/python</directory>
 				<includes>
-				<include>*.py</include>
+					<include>*.py</include>
 				</includes>
 			</resource>
+			<resource>
+				<directory>${basedir}/lib/ruby</directory>
+				<includes>
+					<include>*.rb</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${basedir}/lib/js</directory>
+				<includes>
+					<include>*.js</include>
+				</includes>
+			</resource>			
 		</resources>
-  </build>	  
-	 
+	</build>
+
 </project>

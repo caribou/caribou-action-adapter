@@ -1,15 +1,27 @@
-from com.instrument.triface.action import ATrifaceJythonAction
+from com.instrument.triface.action import ATrifaceAction
 from ClojureMap import ClojureMap
 
-#Simple class to test java -> jython integration
-class TrifaceJythonAction(ATrifaceJythonAction):        
+#
+# An abstract action class defining common getters and setters.
+# Extending classes must implement execute().
+#
+# Currently designed to handle clojure maps (IPersistantMap)
+#
+class TrifaceJythonAction(ATrifaceAction):        
+    
+    def __init__(self):
+        self.objectmap = {}
     
     # abstract function
-    def mangle(self): abstract
+    def execute(self): abstract
     
     # getters / setters 
-    def setMap(self,m):
-        self.maps = ClojureMap(m)        
+    def setMapInternal(self,m):
+    	# TODO: check type and use alternate map impl (HashMap, RubyMap?)
+        self.objectmap = ClojureMap(m)        
         
-    def getMap(self):
-        return self.maps.getmap()
+    def getMapInternal(self):
+        if(type(self.objectmap) is not dict):
+            return self.objectmap.getmap()
+        else:
+            return self.objectmap
