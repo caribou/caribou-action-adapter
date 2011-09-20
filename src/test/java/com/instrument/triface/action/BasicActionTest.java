@@ -66,8 +66,7 @@ public class BasicActionTest{
 		assertNotNull(action.getMap());
 		assertTrue(action.getMap().isEmpty());
 		assertTrue(action.getMap() instanceof Map);
-		
-		action.execute();
+		assertTrue(action.execute() instanceof Map);
 	}
 	
 	/**

@@ -9,13 +9,30 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Script;
 
 /**
- * Triface-specific version of the JSObjectFactory.
+ * Triface-specific version of the JSObjectFactory. Used to build
+ * triface action objects only.
+ * 
+ * Reasoning: Once we create an instance of a java class in JS,
+ * we can't further extend it. 
+ * 
+ * Therefore, if we want to define some default JS methods that don't
+ * need to be copy and pasted all over the place, we define them 
+ * in a generic object, then override them downstream, finally using
+ * the Rhino JavaAdapter to force it into the appropriate java type.
+ * 
+ * Gross hacky fun.
  * 
  * @author feigner
  *
  */
 public class TrifaceJSObjectFactory extends JSObjectFactory {
 	
+	/**
+	 * Primary constructor
+	 * 
+	 * @param interfaceType the interface that the underlying object implements
+	 * @param scriptName the script to be executed
+	 */
 	public TrifaceJSObjectFactory(Class interfaceType, String scriptName) {
 		super(interfaceType, scriptName);
 	}
@@ -46,12 +63,10 @@ public class TrifaceJSObjectFactory extends JSObjectFactory {
 			Object object = myScript.exec(context, scriptable);
 			
 			generator = Context.jsToJava(object, this.interfaceType);
-		} catch (FileNotFoundException e) {
-			System.out.println(e);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			System.out.println(e);
+			throw new RuntimeException("Unable to create " + interfaceType + " object from: " + scriptName, e);
 		}
 		return generator;
 	}

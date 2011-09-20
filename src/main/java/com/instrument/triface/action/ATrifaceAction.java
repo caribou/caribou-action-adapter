@@ -15,14 +15,20 @@ import com.instrument.triface.util.ClojureTypeUtils;
 public abstract class ATrifaceAction implements ITrifaceAction {
 	
 	public abstract Map<Object, Object> execute();
-	protected abstract void setMapInternal(Map s);
+	protected abstract void setMapInternal(Map<Object, Object> map);
 	protected abstract Map<Object, Object> getMapInternal();
 
-	public void setMap(Map s)
+	/**
+	 * Hook for modifying the incoming map.
+	 */
+	public void setMap(Map<Object, Object> map)
 	{
-		this.setMapInternal(s);
+		this.setMapInternal(map);
 	}
 	
+	/**
+	 * Hook for modifying the outgoing map.
+	 */
 	public Map<Object, Object> getMap()
 	{
 		return this.getMapInternal();
@@ -35,7 +41,7 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 	 * @param type the type to convert the map to.
 	 * 
 	 */
-	public Map<Object, Object> getConvertedMap(ITrifaceAction.MapType type)
+	public Map<Object, Object> getConvertedMap(MapType type)
 	{
 		switch (type) {
 			case CLOJURE:
@@ -49,14 +55,14 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 		}
 	}
 	
-	/*
-	 * Handle converting JRuby-specific types within the model map
+	/**
+	 * Handle converting specific types within the model map
 	 * to clojure-compatable types. Pretty gross. And incomplete.
-	 * 
-	 * Returns a deep-copy of the underlying map.
 	 * 
 	 * TODO: this needs to recursively traverse the map looking for
 	 * convertable types...
+	 * 
+	 * @Return PersistentHashMap a deep-copy of the underlying map, converted.
 	 * 
 	 */
 	public PersistentHashMap getClojureMap()
@@ -81,12 +87,13 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 		for(Map.Entry<Object, Object> entry : m.entrySet())
 		{
 			mapObjVal = entry.getValue();
+			
+			// only if we are starting with an empty map do we need to populate the entire map.
 			if(ClojureTypeUtils.hasConversion(mapObjVal) || isEmptyMap)
 			{
 				p = (PersistentHashMap) p.assoc(entry.getKey(), ClojureTypeUtils.convert(mapObjVal));
 			}
 		}
 		return p;
-
 	}
 }

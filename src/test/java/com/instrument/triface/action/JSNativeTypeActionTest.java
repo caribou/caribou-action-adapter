@@ -5,46 +5,40 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.jruby.RubyHash;
 import org.junit.Before;
 import org.junit.Test;
+import org.mozilla.javascript.NativeArray;
 
 import com.instrument.triface.IObjectFactory;
 import com.instrument.triface.util.FactoryUtils;
 
-/**
- * Integration test to ensure default action behavior, doing
- * round trip testing 
- * 
- * @author feigner
- *
- */
-public class JRubyNativeTypeActionTest{
-	
+public class JSNativeTypeActionTest {
 	protected IObjectFactory objectFactory;
 	protected ITrifaceAction action;
 
 	@Before
 	public void setupFactory()
 	{
-		objectFactory = FactoryUtils.getJRubyObjectFactory("NativeTypesAction");
+		objectFactory = FactoryUtils.getJSObjectFactory("NativeTypesAction");
 		action = (ITrifaceAction) objectFactory.createObject();
 	}
 	
 	@Test
-	public void getJRubyMapTest()
+	public void getJSMapTest()
 	{
-		// actions should return a native empty 'map' implementation by default
+		// JS has no concept of a native map, we use HashMap instead.
 		assertNotNull(action.getMap());
 		assertTrue(action.getMap().isEmpty());
-		assertTrue(action.getMap() instanceof RubyHash);
+		assertTrue(action.getMap() instanceof HashMap);
 	}	
 	
 	@Test
-	public void JRubyJavaTypeConversionTest()
+	public void JSJavaTypeConversionTest()
 	{
 		Map<Object, Object> map = action.execute();
 		
@@ -57,20 +51,20 @@ public class JRubyNativeTypeActionTest{
     	assertEquals(true, map.get("boolean"));
     	
     	// int
-    	assertTrue(map.get("int") instanceof Long);
-    	assertEquals(1l, map.get("int"));
+    	assertTrue(map.get("int") instanceof Double);
+    	assertEquals(1.0, map.get("int"));
 
     	// float -> Double...
     	assertTrue(map.get("float") instanceof Double);
     	assertEquals(1.0, map.get("float"));    	          	
     	
     	// list
-    	assertTrue(map.get("list") instanceof List);
-    	assertEquals(Arrays.asList(1l,1l,2l,3l,5l), map.get("list"));          	
+    	assertTrue(map.get("list") instanceof NativeArray);
+    	// TODO: inspect this for equality
     	
     	// map test
     	assertTrue(map.get("map") instanceof Map);
     	assertEquals("val1", ((Map)map.get("map")).get("key1"));
-    	assertEquals(2l, ((Map)map.get("map")).get("key2"));
-	}
+    	assertEquals(2.0, ((Map)map.get("map")).get("key2"));
+	}	
 }

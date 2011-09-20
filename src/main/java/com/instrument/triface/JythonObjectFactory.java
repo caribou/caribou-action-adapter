@@ -16,10 +16,10 @@ import org.python.core.PySystemState;
  */
 public class JythonObjectFactory implements IObjectFactory{
 
-	private final PyObject importer;
-	private final Class interfaceType;
-	private final String moduleName;
-	private final String className;
+	protected final PyObject importer;
+	protected final Class interfaceType;
+	protected final String scriptName;
+	protected final String className;
 
 	/**
 	 * Default constructor.
@@ -29,11 +29,11 @@ public class JythonObjectFactory implements IObjectFactory{
 	 * @param moduleName		The Python module name
 	 * @param className		The Python class name
 	 */
-	public JythonObjectFactory(PySystemState state, Class interfaceType, String moduleName, String className)
+	public JythonObjectFactory(PySystemState state, Class interfaceType, String scriptName, String className)
 	{
 		this.interfaceType = interfaceType;     
 		this.importer = state.getBuiltins().__getitem__(Py.newString("__import__"));
-		this.moduleName = moduleName;
+		this.scriptName = scriptName;
 		this.className = className;
 	}
 
@@ -76,10 +76,20 @@ public class JythonObjectFactory implements IObjectFactory{
 	 * Create an object based on the defined interface.
 	 * 
 	 * @return an object!
+	 * @throws Exception 
 	 */
 	public Object createObject() {
-		PyObject module = importer.__call__(Py.newString(moduleName));
-		return module.__getattr__(className).__call__().__tojava__(interfaceType);
+		Object ret = null;
+		try
+		{
+			PyObject module = importer.__call__(Py.newString(scriptName));
+			ret = module.__getattr__(className).__call__().__tojava__(interfaceType);
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException("Unable to create " + interfaceType + " object from: " + scriptName, e);
+		}
+		return ret;
 	}
 
 	/**

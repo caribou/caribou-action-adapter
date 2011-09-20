@@ -2,10 +2,6 @@ package com.instrument.triface;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Map;
 
 import org.junit.Test;
 
@@ -24,12 +20,6 @@ public abstract class AObjectFactoryTest {
 	protected ITrifaceAction action;
 	
 	public abstract void setupFactory();
-	
-	@Test
-	public void nullFactoryTest()
-	{
-		
-	}
 	
 	@Test
 	public void basicFactoryTest()

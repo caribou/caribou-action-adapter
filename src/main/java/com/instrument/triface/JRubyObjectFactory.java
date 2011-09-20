@@ -13,10 +13,17 @@ import org.jruby.embed.ScriptingContainer;
  */
 public class JRubyObjectFactory implements IObjectFactory {
 
-	private final ScriptingContainer scriptingContainer;
-	private final Class interfaceType;
-	private final String scriptName;
+	protected final ScriptingContainer scriptingContainer;
+	protected final Class interfaceType;
+	protected final String scriptName;
 
+	/**
+	 * Primary constructor.
+	 * 
+	 * @param scriptingContainer the scripting container to run against
+	 * @param interfaceType the interface that the underlying object implements
+	 * @param scriptName the name of the script to be executed
+	 */
 	public JRubyObjectFactory(ScriptingContainer scriptingContainer, Class interfaceType, String scriptName)
 	{
 		this.scriptingContainer = scriptingContainer;
@@ -24,6 +31,12 @@ public class JRubyObjectFactory implements IObjectFactory {
 		this.scriptName = scriptName;
 	}
 
+	/**
+	 * Convenience constructor, creates a new scripting container.
+	 * 
+	 * @param interfaceType the interface that the underlying object implements
+	 * @param scriptName the name of the script to be executed
+	 */
 	public JRubyObjectFactory(Class interfaceType, String scriptName)
 	{
 		this(new ScriptingContainer(),interfaceType,scriptName);
@@ -44,16 +57,13 @@ public class JRubyObjectFactory implements IObjectFactory {
 			scriptingContainer.runScriptlet("load '" + this.scriptName + ".rb'");
 			ret = scriptingContainer.runScriptlet(this.scriptName + ".new");
 		}
-		catch(EvalFailedException e)
-		{
-			System.out.println(e);
-		}
 		catch(Exception e)
 		{
-			System.out.println(e);
+			throw new RuntimeException("Unable to create " + interfaceType + " object from: " + scriptName, e);
 		}
 		return ret;
 	}
+	
 
 	/**
 	 * Add a single lookup path for the factory to use when
@@ -76,5 +86,5 @@ public class JRubyObjectFactory implements IObjectFactory {
 	{
 		this.scriptingContainer.setLoadPaths(paths);
 	}
-
+	
 }

@@ -1,6 +1,9 @@
 package com.instrument.triface;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Before;
+import org.junit.Test;
 
 import com.instrument.triface.action.ITrifaceAction;
 
@@ -19,4 +22,19 @@ public class JythonObjectFactoryTest extends AObjectFactoryTest {
 		objectFactory.addLoadPath("src/test/python/");
     	action = (ITrifaceAction) objectFactory.createObject();
 	}
+	
+	@Test
+	public void badActionFactoryTest() 
+	{
+		objectFactory = new JythonObjectFactory(ITrifaceAction.class, "NON_EXISTANT_ACTION");
+		assertNotNull(objectFactory);
+		try
+		{
+			objectFactory.createObject();
+		}
+		catch(RuntimeException e)
+		{
+			return;
+		}
+	}	
 }

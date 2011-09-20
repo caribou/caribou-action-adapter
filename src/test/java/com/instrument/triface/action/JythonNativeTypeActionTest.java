@@ -47,46 +47,46 @@ public class JythonNativeTypeActionTest {
 	public void JythonJavaTypeConversionTest()
 	{
 		action.setMap(PersistentHashMap.EMPTY);
-		Map<Object, Object> mangleMap = action.execute();
+		Map<Object, Object> map = action.execute();
 		
 		// simple string test
-    	assertTrue(mangleMap.get("string") instanceof String);
-    	assertEquals("hello world!", mangleMap.get("string"));
+    	assertTrue(map.get("string") instanceof String);
+    	assertEquals("hello world!", map.get("string"));
     	
     	// boolean
-    	assertTrue(mangleMap.get("boolean") instanceof Boolean);
-    	assertEquals(true, mangleMap.get("boolean"));
+    	assertTrue(map.get("boolean") instanceof Boolean);
+    	assertEquals(true, map.get("boolean"));
     	
     	// int
-    	assertTrue(mangleMap.get("int") instanceof Integer);
-    	assertEquals(1, mangleMap.get("int"));
+    	assertTrue(map.get("int") instanceof Integer);
+    	assertEquals(1, map.get("int"));
     	
     	// python long -> BigInteger...
-    	assertTrue(mangleMap.get("long") instanceof BigInteger);
-    	assertEquals(1l, ((BigInteger)mangleMap.get("long")).longValue());    	
+    	assertTrue(map.get("long") instanceof BigInteger);
+    	assertEquals(1l, ((BigInteger)map.get("long")).longValue());    	
 
     	// float -> Double...
-    	assertTrue(mangleMap.get("float") instanceof Double);
-    	assertEquals(1.0, mangleMap.get("float"));    	
+    	assertTrue(map.get("float") instanceof Double);
+    	assertEquals(1.0, map.get("float"));    	
     	
     	// complex -> PyComplex
-    	assertTrue(mangleMap.get("complex") instanceof PyComplex);
-    	assertEquals(new PyFloat(0.0), ((PyComplex)mangleMap.get("complex")).getReal());      	
-    	assertEquals(new PyFloat(1.0), ((PyComplex)mangleMap.get("complex")).getImag());
+    	assertTrue(map.get("complex") instanceof PyComplex);
+    	assertEquals(new PyFloat(0.0), ((PyComplex)map.get("complex")).getReal());      	
+    	assertEquals(new PyFloat(1.0), ((PyComplex)map.get("complex")).getImag());
     	
     	// tuple -> pyTuple
-    	assertTrue(mangleMap.get("tuple") instanceof PyTuple);
-    	assertEquals(1, ((PyTuple)mangleMap.get("tuple")).get(0));          	
-    	assertEquals(2, ((PyTuple)mangleMap.get("tuple")).get(1));          	
+    	assertTrue(map.get("tuple") instanceof PyTuple);
+    	assertEquals(1, ((PyTuple)map.get("tuple")).get(0));          	
+    	assertEquals(2, ((PyTuple)map.get("tuple")).get(1));          	
     	
     	// list
-    	assertTrue(mangleMap.get("list") instanceof List);
-    	assertEquals(Arrays.asList(1,1,2,3,5), mangleMap.get("list"));          	
+    	assertTrue(map.get("list") instanceof List);
+    	assertEquals(Arrays.asList(1,1,2,3,5), map.get("list"));          	
     	
     	// map -> dict test
-    	assertTrue(mangleMap.get("map") instanceof Map);
-    	assertEquals("val1", ((Map)mangleMap.get("map")).get("key1"));
-    	assertEquals(2, ((Map)mangleMap.get("map")).get("key2"));
+    	assertTrue(map.get("map") instanceof Map);
+    	assertEquals("val1", ((Map)map.get("map")).get("key1"));
+    	assertEquals(2, ((Map)map.get("map")).get("key2"));
 	}		
 
 }
