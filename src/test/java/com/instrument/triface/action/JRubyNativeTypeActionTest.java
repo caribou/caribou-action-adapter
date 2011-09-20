@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.instrument.triface.IObjectFactory;
+import com.instrument.triface.util.FactoryUtils;
 
 /**
  * Integration test to ensure default action behavior, doing
@@ -21,7 +22,7 @@ import com.instrument.triface.IObjectFactory;
  * @author feigner
  *
  */
-public class JRubyNativeTypeActionTest extends ActionTest {
+public class JRubyNativeTypeActionTest{
 	
 	protected IObjectFactory objectFactory;
 	protected ITrifaceAction action;
@@ -29,7 +30,7 @@ public class JRubyNativeTypeActionTest extends ActionTest {
 	@Before
 	public void setupFactory()
 	{
-		objectFactory = getJRubyObjectFactory("NativeTypesAction");
+		objectFactory = FactoryUtils.getJRubyObjectFactory("NativeTypesAction");
 		action = (ITrifaceAction) objectFactory.createObject();
 	}
 	

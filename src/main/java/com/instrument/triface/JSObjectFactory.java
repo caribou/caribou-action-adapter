@@ -13,10 +13,10 @@ import org.mozilla.javascript.Scriptable;
 
 public class JSObjectFactory implements IObjectFactory {
 
-	private final Context context = Context.enter();
-	private final Scriptable scriptable = new ImporterTopLevel(context);
-	private Class interfaceType;
-	private String scriptName;
+	protected final Context context = Context.enter();
+	protected final Scriptable scriptable = new ImporterTopLevel(context);
+	protected Class interfaceType;
+	protected String scriptName;
 
 	public JSObjectFactory(Class interfaceType, String scriptName)
 	{
@@ -26,24 +26,24 @@ public class JSObjectFactory implements IObjectFactory {
 
 	@Override
 	public Object createObject() {
-		
-		BufferedReader reader = null;
+		Object generator = null;
 		try {
+			BufferedReader reader;
+			Script myScript;
+			
+			// TODO: don't hardcode this path -- figure a way to resolve the scriptname automagically.
 			reader = new BufferedReader( new FileReader("src/test/js/" + scriptName + ".js") );
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		Script myScript = null;
-		try {
 			myScript = context.compileReader(reader, "source", 0, null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Object object = myScript.exec(context, scriptable);
+			generator = Context.jsToJava(object, this.interfaceType);
+			
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
 		}
-		Object object = myScript.exec(context, scriptable);
-		Object generator = Context.jsToJava(object, this.interfaceType);
+		catch (IOException e)
+		{
+			System.out.println(e);
+		}
 		return generator;
 	}
 

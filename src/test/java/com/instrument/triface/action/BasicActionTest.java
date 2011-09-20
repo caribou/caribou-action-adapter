@@ -12,6 +12,8 @@ import org.junit.Test;
 import clojure.lang.PersistentHashMap;
 
 import com.instrument.triface.IObjectFactory;
+import com.instrument.triface.action.ITrifaceAction;
+import com.instrument.triface.util.FactoryUtils;
 
 /**
  * Basic action tests.
@@ -19,7 +21,7 @@ import com.instrument.triface.IObjectFactory;
  * @author feigner
  *
  */
-public class BasicActionTest extends ActionTest {
+public class BasicActionTest{
 
 	protected IObjectFactory objectFactory;
 	protected ITrifaceAction action;
@@ -27,7 +29,7 @@ public class BasicActionTest extends ActionTest {
 	@Test
 	public void JRubyActionTest()
 	{
-		objectFactory = getJRubyObjectFactory("DummyAction");
+		objectFactory = FactoryUtils.getJRubyObjectFactory("DummyAction");
 		action = (ITrifaceAction) objectFactory.createObject();
 		
 		basicMapTest(action);
@@ -37,7 +39,7 @@ public class BasicActionTest extends ActionTest {
 	@Test
 	public void JythonActionTest()
 	{
-		objectFactory = getJythonObjectFactory("DummyAction");
+		objectFactory = FactoryUtils.getJythonObjectFactory("DummyAction");
     	action = (ITrifaceAction) objectFactory.createObject();
 		
 		basicMapTest(action);
@@ -47,7 +49,7 @@ public class BasicActionTest extends ActionTest {
 	@Test
 	public void JSActionTest()
 	{
-		objectFactory = getJSObjectFactory("DummyAction");
+		objectFactory = FactoryUtils.getJSObjectFactory("DummyAction");
     	action = (ITrifaceAction) objectFactory.createObject();
 		
 		basicMapTest(action);
@@ -64,6 +66,8 @@ public class BasicActionTest extends ActionTest {
 		assertNotNull(action.getMap());
 		assertTrue(action.getMap().isEmpty());
 		assertTrue(action.getMap() instanceof Map);
+		
+		action.execute();
 	}
 	
 	/**

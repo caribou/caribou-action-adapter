@@ -20,8 +20,9 @@ import clojure.lang.PersistentHashMap;
 
 import com.instrument.triface.IObjectFactory;
 import com.instrument.triface.JythonObjectFactory;
+import com.instrument.triface.util.FactoryUtils;
 
-public class JythonNativeTypeActionTest extends ActionTest {
+public class JythonNativeTypeActionTest {
 
 	protected IObjectFactory objectFactory;
 	protected ITrifaceAction action;
@@ -29,7 +30,7 @@ public class JythonNativeTypeActionTest extends ActionTest {
 	@Before
 	public void setupFactory()
 	{
-		objectFactory = getJythonObjectFactory("NativeTypesAction");
+		objectFactory = FactoryUtils.getJythonObjectFactory("NativeTypesAction");
     	action = (ITrifaceAction) objectFactory.createObject();
 	}
 	

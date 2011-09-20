@@ -40,7 +40,7 @@ public class JRubyObjectFactory implements IObjectFactory {
 		Object ret = null;
 		try
 		{
-			scriptingContainer.setScriptFilename(this.scriptName + ".rb");
+			// TODO: this is ridiculously slow
 			scriptingContainer.runScriptlet("load '" + this.scriptName + ".rb'");
 			ret = scriptingContainer.runScriptlet(this.scriptName + ".new");
 		}

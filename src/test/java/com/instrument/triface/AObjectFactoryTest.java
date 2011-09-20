@@ -26,6 +26,12 @@ public abstract class AObjectFactoryTest {
 	public abstract void setupFactory();
 	
 	@Test
+	public void nullFactoryTest()
+	{
+		
+	}
+	
+	@Test
 	public void basicFactoryTest()
 	{
 		assertNotNull(action);

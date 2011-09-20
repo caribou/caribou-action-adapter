@@ -14,6 +14,7 @@ import com.instrument.triface.IObjectFactory;
 import com.instrument.triface.JRubyObjectFactory;
 import com.instrument.triface.JythonObjectFactory;
 import com.instrument.triface.action.ITrifaceAction.MapType;
+import com.instrument.triface.util.FactoryUtils;
 
 /**
  * Action converted map tests
@@ -21,7 +22,7 @@ import com.instrument.triface.action.ITrifaceAction.MapType;
  * @author feigner
  *
  */
-public class TrifaceActionGetConvertedMapTest extends ActionTest{
+public class TrifaceActionGetConvertedMapTest {
 	
 	protected IObjectFactory objectFactory;
 	protected ITrifaceAction action;
@@ -29,7 +30,7 @@ public class TrifaceActionGetConvertedMapTest extends ActionTest{
 	@Test
 	public void testJRubyToClojureConvertedMap()
 	{
-		objectFactory = getJRubyObjectFactory("NativeTypesAction");
+		objectFactory = FactoryUtils.getJRubyObjectFactory("NativeTypesAction");
 		action = (ITrifaceAction) objectFactory.createObject();
 		action.execute();
 		testToClojureConvertedMap();
@@ -44,7 +45,7 @@ public class TrifaceActionGetConvertedMapTest extends ActionTest{
 	@Test
 	public void testJythonToClojureConvertedMap()
 	{
-		objectFactory = getJythonObjectFactory("NativeTypesAction");
+		objectFactory = FactoryUtils.getJythonObjectFactory("NativeTypesAction");
     	action = (ITrifaceAction) objectFactory.createObject();
 		action.execute();
 		testToClojureConvertedMap();

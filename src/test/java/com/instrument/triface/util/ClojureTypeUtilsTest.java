@@ -15,6 +15,7 @@ import org.python.core.PyList;
 import clojure.lang.PersistentHashMap;
 import clojure.lang.PersistentList;
 
+import com.instrument.triface.IObjectFactory;
 import com.instrument.triface.JRubyObjectFactory;
 import com.instrument.triface.action.ITrifaceAction;
 
@@ -48,10 +49,9 @@ public class ClojureTypeUtilsTest {
 	public void JRubyHashAndListTest()
 	{
 		/**
-		 * spin up an action here, since instantiating Ruby types without a runtime seems rather difficult.
+		 * spin up an action here, since instantiating Ruby types without a runtime is rather difficult.
 		 */
-		JRubyObjectFactory objectFactory = new JRubyObjectFactory(ITrifaceAction.class, "NativeTypesAction");
-		objectFactory.addLoadPath("src/test/ruby");
+		IObjectFactory objectFactory = FactoryUtils.getJRubyObjectFactory("NativeTypesAction");
 		ITrifaceAction action = (ITrifaceAction) objectFactory.createObject();
     	Map<Object, Object> m = action.execute();
     	
