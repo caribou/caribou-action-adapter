@@ -8,7 +8,7 @@ public class JSObjectFactoryTest extends AObjectFactoryTest {
 
 	@Before
 	public void setupFactory() {	
-		objectFactory = new JSObjectFactory(ITrifaceAction.class, "DummyAction");
+		objectFactory = new TrifaceJSObjectFactory(ITrifaceAction.class, "DummyAction");
 		objectFactory.addLoadPath("src/test/js/");
     	action = (ITrifaceAction) objectFactory.createObject();
 	}
