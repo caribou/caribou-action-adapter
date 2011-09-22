@@ -16,6 +16,7 @@ import org.python.core.PyDictionary;
 import org.python.core.PyFloat;
 import org.python.core.PyTuple;
 
+import clojure.lang.PersistentArrayMap;
 import clojure.lang.PersistentHashMap;
 
 import com.instrument.triface.IObjectFactory;
@@ -46,7 +47,7 @@ public class JythonNativeTypeActionTest {
 	@Test
 	public void JythonJavaTypeConversionTest()
 	{
-		action.setMap(PersistentHashMap.EMPTY);
+		action.setMap(PersistentArrayMap.EMPTY);
 		Map<Object, Object> map = action.execute();
 		
 		// simple string test

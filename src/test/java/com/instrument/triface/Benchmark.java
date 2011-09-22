@@ -1,7 +1,14 @@
 package com.instrument.triface;
 
+import com.instrument.triface.action.ITrifaceAction;
 import com.instrument.triface.util.FactoryUtils;
 
+/**
+ * Dumb test benchmarks
+ * 
+ * @author feigner
+ *
+ */
 public class Benchmark {
 
 	private void simpleJRubyTest()
@@ -12,7 +19,8 @@ public class Benchmark {
 		{
 			long start = System.currentTimeMillis();
 			IObjectFactory factory = FactoryUtils.getJRubyObjectFactory("DummyAction");
-			factory.createObject();
+			ITrifaceAction action = (ITrifaceAction) factory.createObject();
+			action.execute();
 			long end = System.currentTimeMillis();
 			System.out.print(end - start + ", ");
 		}
@@ -27,7 +35,8 @@ public class Benchmark {
 		{
 			long start = System.currentTimeMillis();
 			IObjectFactory factory = FactoryUtils.getJRubyObjectFactory("NativeTypesAction");
-			factory.createObject();
+			ITrifaceAction action = (ITrifaceAction) factory.createObject();
+			action.execute();
 			long end = System.currentTimeMillis();
 			System.out.print(end - start + ", ");
 		}
@@ -43,7 +52,8 @@ public class Benchmark {
 		{
 			long start = System.currentTimeMillis();
 			IObjectFactory factory = FactoryUtils.getJythonObjectFactory("DummyAction");
-			factory.createObject();
+			ITrifaceAction action = (ITrifaceAction) factory.createObject();
+			action.execute();
 			long end = System.currentTimeMillis();
 			System.out.print(end - start + ", ");
 		}
@@ -58,7 +68,8 @@ public class Benchmark {
 		{
 			long start = System.currentTimeMillis();
 			IObjectFactory factory = FactoryUtils.getJythonObjectFactory("NativeTypesAction");
-			factory.createObject();
+			ITrifaceAction action = (ITrifaceAction) factory.createObject();
+			action.execute();
 			long end = System.currentTimeMillis();
 			System.out.print(end - start + ", ");
 		}
@@ -73,7 +84,8 @@ public class Benchmark {
 		{
 			long start = System.currentTimeMillis();
 			IObjectFactory factory = FactoryUtils.getJSObjectFactory("DummyAction");
-			factory.createObject();
+			ITrifaceAction action = (ITrifaceAction) factory.createObject();
+			action.execute();
 			long end = System.currentTimeMillis();
 			System.out.print(end - start + ", ");
 		}
@@ -87,8 +99,9 @@ public class Benchmark {
 		for(int i = 0; i < 100; i++)
 		{
 			long start = System.currentTimeMillis();
-			IObjectFactory factory = FactoryUtils.getJSObjectFactory("NativeTypesAction");
-			factory.createObject();
+			IObjectFactory factory = FactoryUtils.getTrifaceJSObjectFactory("NativeTypesAction");
+			ITrifaceAction action = (ITrifaceAction) factory.createObject();
+			action.execute();
 			long end = System.currentTimeMillis();
 			System.out.print(end - start + ", ");
 		}

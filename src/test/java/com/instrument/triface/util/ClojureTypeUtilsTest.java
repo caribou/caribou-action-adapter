@@ -12,11 +12,12 @@ import org.junit.Test;
 import org.python.core.PyDictionary;
 import org.python.core.PyList;
 
+import clojure.lang.IPersistentList;
+import clojure.lang.IPersistentMap;
 import clojure.lang.PersistentHashMap;
 import clojure.lang.PersistentList;
 
 import com.instrument.triface.IObjectFactory;
-import com.instrument.triface.JRubyObjectFactory;
 import com.instrument.triface.action.ITrifaceAction;
 
 public class ClojureTypeUtilsTest {
@@ -27,7 +28,7 @@ public class ClojureTypeUtilsTest {
 		PyDictionary pyDict = new PyDictionary();
 		pyDict.put("foo", "bar");
 		Object o = ClojureTypeUtils.convert(pyDict);
-		assertTrue(o instanceof PersistentHashMap);
+		assertTrue(o instanceof IPersistentMap);
 		assertEquals(((Map)o).get("foo"), "bar");
 	}
 	
@@ -38,7 +39,7 @@ public class ClojureTypeUtilsTest {
 		pyList.add("foo");
 		pyList.add("bar");
 		Object o = ClojureTypeUtils.convert(pyList);
-		assertTrue(o instanceof PersistentList);
+		assertTrue(o instanceof IPersistentList);
 		PersistentList pl = (PersistentList) o;
 		assertTrue(pl.contains("foo"));
 		assertTrue(pl.contains("bar"));

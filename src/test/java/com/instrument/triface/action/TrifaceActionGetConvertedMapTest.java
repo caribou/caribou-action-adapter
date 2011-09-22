@@ -8,11 +8,10 @@ import org.junit.Test;
 
 import clojure.lang.IPersistentList;
 import clojure.lang.IPersistentMap;
+import clojure.lang.PersistentArrayMap;
 import clojure.lang.PersistentHashMap;
 
 import com.instrument.triface.IObjectFactory;
-import com.instrument.triface.JRubyObjectFactory;
-import com.instrument.triface.JythonObjectFactory;
 import com.instrument.triface.action.ITrifaceAction.MapType;
 import com.instrument.triface.util.FactoryUtils;
 
@@ -37,7 +36,7 @@ public class TrifaceActionGetConvertedMapTest {
 		
 		// reinit action
 		action = (ITrifaceAction) objectFactory.createObject();
-		action.setMap(PersistentHashMap.EMPTY);
+		action.setMap(PersistentArrayMap.EMPTY);
 		action.execute();
 		testToClojureConvertedMap();
 	}
@@ -52,11 +51,29 @@ public class TrifaceActionGetConvertedMapTest {
 		
 		// reinit action
 		action = (ITrifaceAction) objectFactory.createObject();
-		action.setMap(PersistentHashMap.EMPTY);
+		action.setMap(PersistentArrayMap.EMPTY);
 		action.execute();
 		testToClojureConvertedMap();
 	}	
 	
+	@Test
+	public void testJSToClojureConvertedMap()
+	{
+		objectFactory = FactoryUtils.getTrifaceJSObjectFactory("NativeTypesAction");
+    	action = (ITrifaceAction) objectFactory.createObject();
+		action.execute();
+		testToClojureConvertedMap();
+		
+		// reinit action
+		action = (ITrifaceAction) objectFactory.createObject();
+		action.setMap(PersistentArrayMap.EMPTY);
+		action.execute();
+		testToClojureConvertedMap();
+	}	
+	
+	/**
+	 * Ensure that basic types are converted appropriately.
+	 */
 	public void testToClojureConvertedMap()
 	{	
 		Map<Object, Object> m = action.getConvertedMap(MapType.CLOJURE);

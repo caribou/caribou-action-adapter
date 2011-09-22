@@ -1,9 +1,8 @@
 package com.instrument.triface;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Script;
@@ -44,21 +43,24 @@ public class TrifaceJSObjectFactory extends JSObjectFactory {
 	 */
 	@Override
 	public Object createObject() {
+
 		Object generator = null;
 		try {
 			BufferedReader reader;
 			Script myScript;
-						
-			reader = new BufferedReader( new FileReader("lib/js/TrifaceJSActionPre.js") );
+			
+			reader = new BufferedReader(new InputStreamReader(
+				    getClass().getClassLoader().getResourceAsStream("TrifaceJSActionPre.js")));
+			
 			myScript = context.compileReader(reader, "source", 0, null);
 			myScript.exec(context, scriptable);
 
-			// TODO: don't hardcode this path -- figure a way to resolve the scriptname automagically.
-			reader = new BufferedReader( new FileReader("src/test/js/" + scriptName + ".js") );
+			reader = new BufferedReader( new FileReader(resolveScriptPath(scriptName)));
 			myScript = context.compileReader(reader, "source", 0, null);
 			myScript.exec(context, scriptable);
 			
-			reader = new BufferedReader( new FileReader("lib/js/TrifaceJSActionPost.js") );
+			reader = new BufferedReader(new InputStreamReader(
+				    getClass().getClassLoader().getResourceAsStream("TrifaceJSActionPost.js")));
 			myScript = context.compileReader(reader, "source", 0, null);
 			Object object = myScript.exec(context, scriptable);
 			

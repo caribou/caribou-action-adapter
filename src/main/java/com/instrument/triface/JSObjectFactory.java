@@ -1,9 +1,9 @@
 package com.instrument.triface;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mozilla.javascript.Context;
@@ -23,6 +23,7 @@ public class JSObjectFactory implements IObjectFactory {
 	protected final Scriptable scriptable = new ImporterTopLevel(context);
 	protected Class interfaceType;
 	protected String scriptName;
+	protected List<String> searchPaths;
 
 	/**
 	 * Primary constructor
@@ -34,6 +35,8 @@ public class JSObjectFactory implements IObjectFactory {
 	{
 		this.interfaceType = interfaceType;     
 		this.scriptName = scriptName;
+		
+		this.searchPaths = new ArrayList<String>();
 	}
 
 	/**
@@ -47,8 +50,7 @@ public class JSObjectFactory implements IObjectFactory {
 		try {
 			Script script;
 			
-			// TODO: don't hardcode this path -- figure a way to resolve the scriptname automagically.
-			BufferedReader reader = new BufferedReader( new FileReader("src/test/js/" + scriptName + ".js") );
+			BufferedReader reader = new BufferedReader( new FileReader(resolveScriptPath(scriptName)));
 			script = context.compileReader(reader, "source", 0, null);
 			Object object = script.exec(context, scriptable);
 			generator = Context.jsToJava(object, this.interfaceType);
@@ -59,6 +61,30 @@ public class JSObjectFactory implements IObjectFactory {
 		}
 		return generator;
 	}
+	
+	/**
+	 * Since rhino doesn't have any sort of classloading mechanism,
+	 * we have this. 
+	 * 
+	 * TODO: this is crazy inefficient. maybe force that the 
+	 * scripts be on the classpath?
+	 * 
+	 * @param scriptName the name of the script to resolve
+	 * @return String the path to the file. 
+	 */
+	protected String resolveScriptPath(String scriptName)
+	{
+		String filePath;
+		for(String path : this.searchPaths)
+		{
+			filePath = path + "/" + scriptName + ".js";
+			if(new File(filePath).isFile())
+			{
+				return filePath;
+			}
+		}
+		return "";
+	}
 
 	/**
 	 * Add a single lookup path for the factory to use when
@@ -67,8 +93,7 @@ public class JSObjectFactory implements IObjectFactory {
 	 * @param path the path to search
 	 */	
 	public void addLoadPath(String path) {
-		// TODO: make this work
-
+		this.searchPaths.add(path);
 	}
 
 	/**
@@ -78,8 +103,7 @@ public class JSObjectFactory implements IObjectFactory {
 	 * @param paths the paths to search
 	 */
 	public void addLoadPaths(List<String> paths) {
-		// TODO: make this work
-
+		this.searchPaths.addAll(paths);
 	}
 
 }

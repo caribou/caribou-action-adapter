@@ -30,9 +30,16 @@ public class FactoryUtils {
 	
 	public static IObjectFactory getJSObjectFactory(String script)
 	{
-		IObjectFactory objectFactory = new TrifaceJSObjectFactory(ITrifaceAction.class, script);
+		IObjectFactory objectFactory = new JSObjectFactory(ITrifaceAction.class, script);
 		objectFactory.addLoadPath("src/test/js/");
 		return objectFactory;
 	}
+	
+	public static IObjectFactory getTrifaceJSObjectFactory(String script)
+	{
+		IObjectFactory objectFactory = new TrifaceJSObjectFactory(ITrifaceAction.class, script);
+		objectFactory.addLoadPath("src/test/js/");
+		return objectFactory;
+	}	
 	
 }

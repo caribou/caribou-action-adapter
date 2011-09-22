@@ -4,12 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.jruby.RubyHash;
 import org.junit.Before;
 import org.junit.Test;
 import org.mozilla.javascript.NativeArray;
@@ -24,7 +21,7 @@ public class JSNativeTypeActionTest {
 	@Before
 	public void setupFactory()
 	{
-		objectFactory = FactoryUtils.getJSObjectFactory("NativeTypesAction");
+		objectFactory = FactoryUtils.getTrifaceJSObjectFactory("NativeTypesAction");
 		action = (ITrifaceAction) objectFactory.createObject();
 	}
 	

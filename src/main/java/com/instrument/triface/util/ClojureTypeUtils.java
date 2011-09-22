@@ -1,11 +1,13 @@
 package com.instrument.triface.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.jruby.RubyArray;
 import org.jruby.RubyHash;
+import org.mozilla.javascript.NativeArray;
 import org.python.core.PyDictionary;
 import org.python.core.PyList;
 
@@ -94,6 +96,24 @@ public class ClojureTypeUtils implements ITypeUtils {
 	};		
 	
 	/**
+	 * JS specific conversions
+	 */
+	private static final Function<Object, Object> NATIVEARRAY_TO_PERSISTENTLIST = new Function<Object, Object>() {
+		public IPersistentList apply(Object in) {
+			
+			NativeArray arr = (NativeArray) in;
+			List<Object> list = new ArrayList<Object>((int) arr.getLength());
+			for (Object o : arr.getIds()) {
+			    int index = (Integer) o;
+			    list.add(index, arr.get(index, null));
+			}
+			
+			PersistentList pl = (PersistentList) PersistentList.create(list);
+			return pl;
+    	}
+	};
+	
+	/**
 	 * Build the conversion map based on class type
 	 */
 	private static final Map<Class<?>, Function<Object, Object>> CLOJURE_CONVERSION_MAP = buildClojureConversionMap();
@@ -101,10 +121,19 @@ public class ClojureTypeUtils implements ITypeUtils {
 	{
 	    Map<Class<?>, Function<Object, Object>> map = new HashMap<Class<?>, Function<Object, Object>>();
 	    
+	    // py
 	    map.put(PyDictionary.class, MAP_TO_PERSISTENTHASHMAP);
 	    map.put(PyList.class, LIST_TO_PERSISTENTLIST);
+	    
+	    // ruby
 	    map.put(RubyHash.class, MAP_TO_PERSISTENTHASHMAP);
 	    map.put(RubyArray.class, RUBYARRAY_TO_PERSISTENTLIST);
+	    
+	    // js
+	    map.put(NativeArray.class, NATIVEARRAY_TO_PERSISTENTLIST);
+	    
+	    //java
+	    map.put(HashMap.class, MAP_TO_PERSISTENTHASHMAP);
 	    
 	    return map;
 	}

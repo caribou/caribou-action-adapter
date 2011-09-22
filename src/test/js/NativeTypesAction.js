@@ -1,4 +1,5 @@
-// map -- this.objectMap
+// Simple class to test java -> JS integration
+// Sets basic JS types
 action.execute=function(){
 	this.objectmap.put("string","hello world!");
 	this.objectmap.put("boolean", true);

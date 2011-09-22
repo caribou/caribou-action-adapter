@@ -2,7 +2,6 @@ package com.instrument.triface;
 
 import java.util.List;
 
-import org.jruby.embed.EvalFailedException;
 import org.jruby.embed.ScriptingContainer;
 
 /**

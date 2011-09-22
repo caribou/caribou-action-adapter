@@ -7,18 +7,18 @@ import org.junit.Test;
 
 import com.instrument.triface.action.ITrifaceAction;
 
-public class JSObjectFactoryTest extends AObjectFactoryTest {
+public class TrifaceJSObjectFactoryTest extends AObjectFactoryTest {
 
 	@Before
 	public void setupFactory() {	
-		objectFactory = new JSObjectFactory(ITrifaceAction.class, "DummyAction");
+		objectFactory = new TrifaceJSObjectFactory(ITrifaceAction.class, "DummyAction");
 		objectFactory.addLoadPath("src/test/js/");
     	action = (ITrifaceAction) objectFactory.createObject();
 	}
 	
 	@Test
 	public void badActionFactoryTest() {
-		objectFactory = new JSObjectFactory(ITrifaceAction.class, "NON_EXISTANT_ACTION");
+		objectFactory = new TrifaceJSObjectFactory(ITrifaceAction.class, "NON_EXISTANT_ACTION");
 		assertNotNull(objectFactory);
 		try
 		{

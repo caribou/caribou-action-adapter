@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import clojure.lang.PersistentArrayMap;
 import clojure.lang.PersistentHashMap;
 
 import com.instrument.triface.IObjectFactory;
@@ -77,14 +78,14 @@ public class BasicActionTest{
 	 */
 	public void basicClojureMapTest(ITrifaceAction action)
 	{
-		PersistentHashMap cljMap = PersistentHashMap.EMPTY;
-		cljMap = (PersistentHashMap) cljMap.assoc("foo", "bar");
+		PersistentArrayMap cljMap = PersistentArrayMap.EMPTY;
+		cljMap = (PersistentArrayMap) cljMap.assoc("foo", "bar");
 		action.setMap(cljMap);
 
 		assertFalse(action.getMap().isEmpty());
 		assertTrue(action.getMap().containsKey("foo"));
 		assertEquals("bar", action.getMap().get("foo"));
-		assertTrue(action.getMap() instanceof PersistentHashMap);
+		assertTrue(action.getMap() instanceof PersistentArrayMap);
 	}	
 
 }

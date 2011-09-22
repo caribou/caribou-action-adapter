@@ -1,4 +1,5 @@
 from com.instrument.triface.action import ATrifaceAction
+from clojure.lang import PersistentArrayMap
 from ClojureMap import ClojureMap
 
 #
@@ -18,7 +19,10 @@ class TrifaceJythonAction(ATrifaceAction):
     # getters / setters 
     def setMapInternal(self,m):
     	# TODO: check type and use alternate map impl (HashMap, RubyMap?)
-        self.objectmap = ClojureMap(m)        
+    	if isinstance(m, PersistentArrayMap):
+        	self.objectmap = ClojureMap(m)
+        else:
+        	self.objectmap = m;        
         
     def getMapInternal(self):
         if(type(self.objectmap) is not dict):

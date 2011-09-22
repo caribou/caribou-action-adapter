@@ -1,14 +1,8 @@
 # Interface Action Adapter-----------
 
-Adapter utility for interface actions. Currently supports jython object
-coercion and jython -> clojure map conversion. 
+Adapter utility for interface actions. Currently supports jython, JRuby and
+JS object coersion. 
 
 ## Setup ----------------------------
 
 mvn clean install
-
-## Usage ----------------------------
-
-objectFactory = new JythonObjectFactory(TargetInterface.class, "pythonModuleName");
-jythonObject = (TargetInterface) objectFactory.createObject();
-jythonObject.foo();

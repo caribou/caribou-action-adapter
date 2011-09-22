@@ -2,6 +2,8 @@ package com.instrument.triface.action;
 
 import java.util.Map;
 
+import clojure.lang.IPersistentMap;
+import clojure.lang.PersistentArrayMap;
 import clojure.lang.PersistentHashMap;
 
 import com.instrument.triface.util.ClojureTypeUtils;
@@ -45,7 +47,8 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 	{
 		switch (type) {
 			case CLOJURE:
-				return getClojureMap();
+				// gross-ass cast...
+				return (Map<Object, Object>) getClojureMap();
 			case RUBY:
 				throw new UnsupportedOperationException("Not yet");
 			case PYTHON:
@@ -65,21 +68,21 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 	 * @Return PersistentHashMap a deep-copy of the underlying map, converted.
 	 * 
 	 */
-	public PersistentHashMap getClojureMap()
+	public IPersistentMap getClojureMap()
 	{
-		PersistentHashMap p = null;
+		IPersistentMap p = null;
 		boolean isEmptyMap = false;
 		
 		Map<Object, Object> m = this.getMap();
-		if(m instanceof PersistentHashMap)
+		if(m instanceof PersistentHashMap || m instanceof PersistentArrayMap)
 		{
 			// exploit the fact that assoc returns a deep copy cheaply
-			p = (PersistentHashMap)((PersistentHashMap)m).assoc(null, null);
+			p = ((IPersistentMap)m).assoc(null, null);
 		}
 		else
 		{
 			// deep copy, starting with an empty map
-			p = PersistentHashMap.EMPTY;
+			p = PersistentArrayMap.EMPTY;
 			isEmptyMap = true;
 		}
 		
@@ -91,7 +94,7 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 			// only if we are starting with an empty map do we need to populate the entire map.
 			if(ClojureTypeUtils.hasConversion(mapObjVal) || isEmptyMap)
 			{
-				p = (PersistentHashMap) p.assoc(entry.getKey(), ClojureTypeUtils.convert(mapObjVal));
+				p = (IPersistentMap) p.assoc(entry.getKey(), ClojureTypeUtils.convert(mapObjVal));
 			}
 		}
 		return p;

@@ -19,8 +19,13 @@ class TrifaceJRubyAction < ATrifaceAction
 	end
 	
 	def setMapInternal(m)
-    	# TODO: check type and use alternate map impl (HashMap, RubyMap?)	
-    	@objectmap = ClojureMap.new(m)
+		print "setting map of type: " + m.getClass().toString()
+    	# TODO: figure out how to do better type checking. this sucks.
+    	if m.getClass().toString() == "class clojure.lang.PersistentArrayMap"
+    		@objectmap = ClojureMap.new(m)
+    	else
+    		@objectmap = m
+    	end
 	end
 	
 	def getMapInternal()
