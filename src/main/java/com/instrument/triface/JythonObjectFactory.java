@@ -87,7 +87,6 @@ public class JythonObjectFactory implements IObjectFactory{
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
 			throw new RuntimeException("Unable to create " + interfaceType + " object from: " + scriptName, e);
 		}
 		return ret;
