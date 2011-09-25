@@ -1,10 +1,12 @@
 package com.instrument.triface.action;
 
+import java.util.List;
 import java.util.Map;
 
+import clojure.lang.IPersistentList;
 import clojure.lang.IPersistentMap;
 import clojure.lang.PersistentArrayMap;
-import clojure.lang.PersistentHashMap;
+import clojure.lang.PersistentList;
 
 import com.instrument.triface.util.ClojureTypeUtils;
 
@@ -48,7 +50,7 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 		switch (type) {
 			case CLOJURE:
 				// gross-ass cast...
-				return (Map<Object, Object>) getClojureMap();
+				return (Map<Object, Object>) getClojureMap(this.getMap());
 			case RUBY:
 				throw new UnsupportedOperationException("Not yet");
 			case PYTHON:
@@ -62,41 +64,62 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 	 * Handle converting specific types within the model map
 	 * to clojure-compatable types. Pretty gross. And incomplete.
 	 * 
-	 * TODO: this needs to recursively traverse the map looking for
-	 * convertable types...
+	 * If we encounter a map or a list, we rip through that, attempting to
+	 * find convertable types.
 	 * 
-	 * @Return PersistentHashMap a deep-copy of the underlying map, converted.
+	 * TODO: this is really slow. Fix.
+	 * 
+	 * @Return IPersistentMap a deep-copy of the underlying map, converted.
 	 * 
 	 */
-	public IPersistentMap getClojureMap()
+	public IPersistentMap getClojureMap(Map<Object, Object> sourceMap)
 	{
 		IPersistentMap p = null;
-		boolean isEmptyMap = false;
-		
-		Map<Object, Object> m = this.getMap();
-		if(m instanceof PersistentHashMap || m instanceof PersistentArrayMap)
-		{
-			// exploit the fact that assoc returns a deep copy cheaply
-			p = ((IPersistentMap)m).assoc(null, null);
-		}
-		else
-		{
-			// deep copy, starting with an empty map
-			p = PersistentArrayMap.EMPTY;
-			isEmptyMap = true;
-		}
+		p = PersistentArrayMap.EMPTY;
 		
 		Object mapObjVal;
-		for(Map.Entry<Object, Object> entry : m.entrySet())
+		for(Map.Entry<Object, Object> entry : sourceMap.entrySet())
 		{
 			mapObjVal = entry.getValue();
+			if(ClojureTypeUtils.hasConversion(mapObjVal))
+			{
+				mapObjVal = ClojureTypeUtils.convert(mapObjVal);
+			}
 			
-			// only if we are starting with an empty map do we need to populate the entire map.
-			if(ClojureTypeUtils.hasConversion(mapObjVal) || isEmptyMap)
+			if(mapObjVal instanceof Map)
+			{
+				p = p.assoc(entry.getKey(), getClojureMap((Map<Object, Object>) mapObjVal));
+			}
+			else if(mapObjVal instanceof List)
+			{
+				p = p.assoc(entry.getKey(), getClojureList((List<Object>)mapObjVal));
+			}
+			else
 			{
 				p = (IPersistentMap) p.assoc(entry.getKey(), ClojureTypeUtils.convert(mapObjVal));
 			}
 		}
 		return p;
+	}
+	
+	/**
+	 * Convert list elements to the appropriate types.
+	 * 
+	 * TODO: check to see if list contains any maps...
+	 * 
+	 * @param sourceList
+	 * @return IPersistentList a deep-copy of the underlying list
+	 */
+	public IPersistentList getClojureList(List<Object> sourceList)
+	{
+		IPersistentList l = null;
+		l = PersistentList.EMPTY;
+		
+		for(Object listObjVal : sourceList)
+		{
+			l = (IPersistentList) l.cons(ClojureTypeUtils.convert(listObjVal));
+		}
+		
+		return l;
 	}
 }
