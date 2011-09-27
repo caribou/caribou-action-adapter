@@ -6,7 +6,7 @@ require 'TrifaceJRubyAction.rb'
 class NestedTypesAction < TrifaceJRubyAction
   
   def execute()
-    @objectmap["list"] = [[1,1],[2,3]]
+    @objectmap["list"] = [["a","b"],["c","d"]]
     @objectmap["map"] = {"key1" => {"foo","bar"}, "key2" => {"bar","baz"}}
     return getMap()
   end

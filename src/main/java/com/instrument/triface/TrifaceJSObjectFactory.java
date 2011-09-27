@@ -50,7 +50,7 @@ public class TrifaceJSObjectFactory extends JSObjectFactory {
 			Script myScript;
 			
 			reader = new BufferedReader(new InputStreamReader(
-				    getClass().getClassLoader().getResourceAsStream("TrifaceJSActionPre.js")));
+				     getClass().getClassLoader().getResourceAsStream("TrifaceJSActionPre.js")));
 			
 			myScript = context.compileReader(reader, "source", 0, null);
 			myScript.exec(context, scriptable);

@@ -2,7 +2,7 @@
 // Sets basic JS types
 action.execute=function(){
   
-  this.objectmap.put("list", [[1,1],[2,3]]);
+  this.objectmap.put("list", [["a","b"],["c","d"]]);
   
   m1 = new HashMap();
   m1.put("key1","foo");

@@ -81,11 +81,14 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 		for(Map.Entry<Object, Object> entry : sourceMap.entrySet())
 		{
 			mapObjVal = entry.getValue();
+			
+			// convert the object, if we have an applicable conversion.
 			if(ClojureTypeUtils.hasConversion(mapObjVal))
 			{
 				mapObjVal = ClojureTypeUtils.convert(mapObjVal);
 			}
 			
+			// convert the contents of maps and lists, otherwise, add it to the map
 			if(mapObjVal instanceof Map)
 			{
 				p = p.assoc(entry.getKey(), getClojureMap((Map<Object, Object>) mapObjVal));
@@ -94,9 +97,10 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 			{
 				p = p.assoc(entry.getKey(), getClojureList((List<Object>)mapObjVal));
 			}
+			
 			else
 			{
-				p = (IPersistentMap) p.assoc(entry.getKey(), ClojureTypeUtils.convert(mapObjVal));
+				p = (IPersistentMap) p.assoc(entry.getKey(), mapObjVal);
 			}
 		}
 		return p;
@@ -115,9 +119,10 @@ public abstract class ATrifaceAction implements ITrifaceAction {
 		IPersistentList l = null;
 		l = PersistentList.EMPTY;
 		
-		for(Object listObjVal : sourceList)
+		// iterate backwards, since cons appends to the front -- maintain order
+		for(int i = sourceList.size()-1; i >=0; i--)
 		{
-			l = (IPersistentList) l.cons(ClojureTypeUtils.convert(listObjVal));
+			l = (IPersistentList) l.cons(ClojureTypeUtils.convert(sourceList.get(i)));
 		}
 		
 		return l;

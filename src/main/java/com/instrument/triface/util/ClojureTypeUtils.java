@@ -1,6 +1,7 @@
 package com.instrument.triface.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class ClojureTypeUtils implements ITypeUtils {
 	 * 
 	 * @param o the object to convert
 	 * @return Object The clojure-specific corollary to the input object.
-	 *                Returns the original object if no conversion could be made
+	 *         Returns the original object if no conversion could be made
 	 */
 	public static Object convert(Object o)
 	{
@@ -102,13 +103,22 @@ public class ClojureTypeUtils implements ITypeUtils {
 		public IPersistentList apply(Object in) {
 			
 			NativeArray arr = (NativeArray) in;
-			List<Object> list = new ArrayList<Object>((int) arr.getLength());
+			Object [] array = new Object[(int) arr.getLength()];
 			for (Object o : arr.getIds()) {
 			    int index = (Integer) o;
-			    list.add(index, arr.get(index, null));
+			    Object val = arr.get(index, null);
+			    
+			    // TODO: fix this
+			    // there is a weird issue where some numbers within a NativeArray will be integers, the others,
+			    // doubles
+			    if(val instanceof Integer)
+			    {
+			    	val = (double)((Integer)val);
+			    }
+			    array[index] = val;
 			}
 			
-			PersistentList pl = (PersistentList) PersistentList.create(list);
+			PersistentList pl = (PersistentList) PersistentList.create(Arrays.asList(array));
 			return pl;
     	}
 	};

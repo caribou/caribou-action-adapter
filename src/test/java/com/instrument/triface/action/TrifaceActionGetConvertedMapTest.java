@@ -1,6 +1,7 @@
 package com.instrument.triface.action;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 import java.util.Map;
@@ -134,7 +135,7 @@ public class TrifaceActionGetConvertedMapTest {
 	}
 	
 	/**
-	 * Ensure that nested types (maps, lists) get converted appropriately
+	 * Ensure that nested types (maps, lists) get converted (and ordered) appropriately
 	 */
 	public void testToClojureConvertedMapNested()
 	{	
@@ -143,14 +144,23 @@ public class TrifaceActionGetConvertedMapTest {
 		
 		// check converted types
 		assertTrue(m.get("map") instanceof IPersistentMap);
-		Map outerMap = (Map) m.get("map");		
+		Map outerMap = (Map) m.get("map");	
+		assertEquals(2,outerMap.size());
 		assertTrue(outerMap.get("key1") instanceof IPersistentMap);
 		assertTrue(outerMap.get("key2") instanceof IPersistentMap);
 		
 		assertTrue(m.get("list") instanceof IPersistentList);
 		List outerList = (List) m.get("list");
+		assertEquals(2, outerList.size());
 		assertTrue(outerList.get(0) instanceof IPersistentList);
+		List innerList = (List) outerList.get(0);
+		assertEquals("a",innerList.get(0));
+		assertEquals("b",innerList.get(1));
 		assertTrue(outerList.get(1) instanceof IPersistentList);
+		innerList = (List) outerList.get(1);
+		assertEquals("c",innerList.get(0));
+		assertEquals("d",innerList.get(1));
+		
 		
 	}
 }
