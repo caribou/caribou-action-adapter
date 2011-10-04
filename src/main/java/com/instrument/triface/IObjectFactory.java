@@ -16,16 +16,4 @@ public interface IObjectFactory {
 	 * @return
 	 */
 	public Object createObject();
-	
-	/**
-	 * Add a lookup path to use when resolving factory assets
-	 * @param path the lookup path
-	 */
-	public void addLoadPath(String path);
-	
-	/**
-	 * Add a list of paths to use when resolving factory assets
-	 * @param paths a list of paths
-	 */
-	public void addLoadPaths(List<String> paths);	
 }

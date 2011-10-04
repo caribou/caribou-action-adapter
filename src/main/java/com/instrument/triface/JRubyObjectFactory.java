@@ -1,8 +1,11 @@
 package com.instrument.triface;
 
+import java.io.File;
 import java.util.List;
 
 import org.jruby.embed.ScriptingContainer;
+
+import com.instrument.triface.util.FileUtils;
 
 /**
  * JRuby Object Factory for coercing JRuby to Java objects.
@@ -14,7 +17,7 @@ public class JRubyObjectFactory implements IObjectFactory {
 
 	protected final ScriptingContainer scriptingContainer;
 	protected final Class interfaceType;
-	protected final String scriptName;
+	protected final File script;
 
 	/**
 	 * Primary constructor.
@@ -23,11 +26,11 @@ public class JRubyObjectFactory implements IObjectFactory {
 	 * @param interfaceType the interface that the underlying object implements
 	 * @param scriptName the name of the script to be executed
 	 */
-	public JRubyObjectFactory(ScriptingContainer scriptingContainer, Class interfaceType, String scriptName)
+	public JRubyObjectFactory(ScriptingContainer scriptingContainer, Class interfaceType, File script)
 	{
 		this.scriptingContainer = scriptingContainer;
 		this.interfaceType = interfaceType;
-		this.scriptName = scriptName;
+		this.script = script;
 	}
 
 	/**
@@ -36,9 +39,9 @@ public class JRubyObjectFactory implements IObjectFactory {
 	 * @param interfaceType the interface that the underlying object implements
 	 * @param scriptName the name of the script to be executed
 	 */
-	public JRubyObjectFactory(Class interfaceType, String scriptName)
+	public JRubyObjectFactory(Class interfaceType, File script)
 	{
-		this(new ScriptingContainer(),interfaceType,scriptName);
+		this(new ScriptingContainer(),interfaceType,script);
 	}
 
 	/**
@@ -51,39 +54,16 @@ public class JRubyObjectFactory implements IObjectFactory {
 	{
 		Object ret = null;
 		try
-		{
+		{			
 			// TODO: this is ridiculously slow
-			scriptingContainer.runScriptlet("load '" + this.scriptName + ".rb'");
-			ret = scriptingContainer.runScriptlet(this.scriptName + ".new");
+			scriptingContainer.getLoadPaths().add(FileUtils.getPath(this.script));
+			scriptingContainer.runScriptlet("load '" + this.script.getName()  + "'");
+			ret = scriptingContainer.runScriptlet(FileUtils.getFileNameSansExtension(this.script) + ".new");
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException("Unable to create " + interfaceType + " object from: " + scriptName, e);
+			throw new RuntimeException("Unable to create " + interfaceType + " object from: " + this.script, e);
 		}
 		return ret;
 	}
-	
-
-	/**
-	 * Add a single lookup path for the factory to use when
-	 * resolving a script.
-	 * 
-	 * @param path the path to search
-	 */
-	public void addLoadPath(String path)
-	{
-		this.scriptingContainer.getLoadPaths().add(path);
-	}
-
-	/**
-	 * Add a list of lookup paths for the factory to use when
-	 * resolving a script.
-	 * 
-	 * @param paths the paths to search
-	 */
-	public void addLoadPaths(List<String> paths)
-	{
-		this.scriptingContainer.setLoadPaths(paths);
-	}
-	
 }

@@ -1,6 +1,7 @@
 package com.instrument.triface;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 
@@ -32,8 +33,8 @@ public class TrifaceJSObjectFactory extends JSObjectFactory {
 	 * @param interfaceType the interface that the underlying object implements
 	 * @param scriptName the script to be executed
 	 */
-	public TrifaceJSObjectFactory(Class interfaceType, String scriptName) {
-		super(interfaceType, scriptName);
+	public TrifaceJSObjectFactory(Class interfaceType, File script) {
+		super(interfaceType, script);
 	}
 
 	/**
@@ -55,8 +56,7 @@ public class TrifaceJSObjectFactory extends JSObjectFactory {
 			myScript = context.compileReader(reader, "source", 0, null);
 			myScript.exec(context, scriptable);
 
-			reader = new BufferedReader( new FileReader(resolveScriptPath(scriptName)));
-			myScript = context.compileReader(reader, "source", 0, null);
+			myScript = context.compileReader(new BufferedReader(new FileReader(this.script)), "source", 0, null);
 			myScript.exec(context, scriptable);
 			
 			reader = new BufferedReader(new InputStreamReader(
@@ -68,7 +68,7 @@ public class TrifaceJSObjectFactory extends JSObjectFactory {
 		}
 		catch (Exception e)
 		{
-			throw new RuntimeException("Unable to create " + interfaceType + " object from: " + scriptName, e);
+			throw new RuntimeException("Unable to create " + interfaceType + " object from: " + this.script.getPath(), e);
 		}
 		return generator;
 	}

@@ -2,10 +2,13 @@ package com.instrument.triface;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.instrument.triface.action.ITrifaceAction;
+import com.instrument.triface.util.FactoryUtils;
 
 /**
  * Simple tests for basic JRubyObjectFactory functionality
@@ -18,14 +21,13 @@ public class JRubyObjectFactoryTest extends AObjectFactoryTest {
 	@Before
 	public void setupFactory()
 	{
-		objectFactory = new JRubyObjectFactory(ITrifaceAction.class, "DummyAction");
-		objectFactory.addLoadPath("src/test/ruby");
+		objectFactory = FactoryUtils.getJRubyObjectFactory("DummyAction");
 		action = (ITrifaceAction) objectFactory.createObject();
 	}
 
 	@Test
 	public void badActionFactoryTest() {
-		objectFactory = new JRubyObjectFactory(ITrifaceAction.class, "NON_EXISTANT_ACTION");
+		objectFactory = new JRubyObjectFactory(ITrifaceAction.class, new File("NON_EXISTANT_ACTION"));
 		assertNotNull(objectFactory);
 		try
 		{

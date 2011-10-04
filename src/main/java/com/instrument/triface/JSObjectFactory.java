@@ -22,8 +22,7 @@ public class JSObjectFactory implements IObjectFactory {
 	protected final Context context = Context.enter();
 	protected final Scriptable scriptable = new ImporterTopLevel(context);
 	protected Class interfaceType;
-	protected String scriptName;
-	protected List<String> searchPaths;
+	protected File script;
 
 	/**
 	 * Primary constructor
@@ -31,12 +30,10 @@ public class JSObjectFactory implements IObjectFactory {
 	 * @param interfaceType the interface that the underlying object implements
 	 * @param scriptName the script to be executed
 	 */
-	public JSObjectFactory(Class interfaceType, String scriptName)
+	public JSObjectFactory(Class interfaceType, File script)
 	{
 		this.interfaceType = interfaceType;     
-		this.scriptName = scriptName;
-		
-		this.searchPaths = new ArrayList<String>();
+		this.script = script;
 	}
 
 	/**
@@ -50,60 +47,15 @@ public class JSObjectFactory implements IObjectFactory {
 		try {
 			Script script;
 			
-			BufferedReader reader = new BufferedReader( new FileReader(resolveScriptPath(scriptName)));
+			BufferedReader reader = new BufferedReader( new FileReader(this.script));
 			script = context.compileReader(reader, "source", 0, null);
 			Object object = script.exec(context, scriptable);
 			generator = Context.jsToJava(object, this.interfaceType);
 			
 		} catch (Exception e)
 		{
-			throw new RuntimeException("Unable to create " + interfaceType + " object from: " + scriptName, e);
+			throw new RuntimeException("Unable to create " + interfaceType + " object from: " + this.script.getPath(), e);
 		}
 		return generator;
 	}
-	
-	/**
-	 * Since rhino doesn't have any sort of classloading mechanism,
-	 * we have this. 
-	 * 
-	 * TODO: this is crazy inefficient. maybe force that the 
-	 * scripts be on the classpath?
-	 * 
-	 * @param scriptName the name of the script to resolve
-	 * @return String the path to the file. 
-	 */
-	protected String resolveScriptPath(String scriptName)
-	{
-		String filePath;
-		for(String path : this.searchPaths)
-		{
-			filePath = path + "/" + scriptName + ".js";
-			if(new File(filePath).isFile())
-			{
-				return filePath;
-			}
-		}
-		return "";
-	}
-
-	/**
-	 * Add a single lookup path for the factory to use when
-	 * resolving a script.
-	 * 
-	 * @param path the path to search
-	 */	
-	public void addLoadPath(String path) {
-		this.searchPaths.add(path);
-	}
-
-	/**
-	 * Add a list of lookup paths for the factory to use when
-	 * resolving a script.
-	 * 
-	 * @param paths the paths to search
-	 */
-	public void addLoadPaths(List<String> paths) {
-		this.searchPaths.addAll(paths);
-	}
-
 }
