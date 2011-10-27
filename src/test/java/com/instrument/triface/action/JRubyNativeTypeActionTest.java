@@ -12,7 +12,7 @@ import org.jruby.RubyHash;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.instrument.triface.IObjectFactory;
+import com.instrument.triface.interop.IObjectFactory;
 import com.instrument.triface.util.FactoryUtils;
 
 /**

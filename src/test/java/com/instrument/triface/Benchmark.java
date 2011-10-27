@@ -1,6 +1,7 @@
 package com.instrument.triface;
 
 import com.instrument.triface.action.ITrifaceAction;
+import com.instrument.triface.interop.IObjectFactory;
 import com.instrument.triface.util.FactoryUtils;
 
 /**

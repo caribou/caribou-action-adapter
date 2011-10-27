@@ -2,12 +2,12 @@ package com.instrument.triface.util;
 
 import java.io.File;
 
-import com.instrument.triface.IObjectFactory;
-import com.instrument.triface.JRubyObjectFactory;
-import com.instrument.triface.JSObjectFactory;
-import com.instrument.triface.JythonObjectFactory;
-import com.instrument.triface.TrifaceJSObjectFactory;
 import com.instrument.triface.action.ITrifaceAction;
+import com.instrument.triface.interop.IObjectFactory;
+import com.instrument.triface.interop.JRubyObjectFactory;
+import com.instrument.triface.interop.JSObjectFactory;
+import com.instrument.triface.interop.JythonObjectFactory;
+import com.instrument.triface.interop.TrifaceJSObjectFactory;
 
 /**
  * Superclass for helping with action testing.

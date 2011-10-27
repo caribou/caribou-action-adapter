@@ -18,8 +18,8 @@ import clojure.lang.IPersistentMap;
 import clojure.lang.PersistentHashMap;
 import clojure.lang.PersistentList;
 
-import com.instrument.triface.IObjectFactory;
 import com.instrument.triface.action.ITrifaceAction;
+import com.instrument.triface.interop.IObjectFactory;
 
 public class ClojureTypeUtilsTest {
 	

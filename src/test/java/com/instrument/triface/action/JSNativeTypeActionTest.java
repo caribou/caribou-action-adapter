@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mozilla.javascript.NativeArray;
 
-import com.instrument.triface.IObjectFactory;
+import com.instrument.triface.interop.IObjectFactory;
 import com.instrument.triface.util.FactoryUtils;
 
 public class JSNativeTypeActionTest {

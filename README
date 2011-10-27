@@ -1,7 +1,7 @@
 # Interface Action Adapter-----------
 
-Adapter utility for interface actions. Currently supports jython, JRuby and
-JS object coersion. 
+Adapter utility for interface actions and templating. Currently supports jython, JRuby and
+JS object coersion.
 
 ## Setup ----------------------------
 

@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>triface-action-adapter</name>
-	<url>http://maven.apache.org</url>
+	<url>http://www.weareinstrument.com</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -46,6 +46,11 @@
 			<artifactId>js</artifactId>
 			<version>1.7R2</version>
 		</dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.9</version>
+    </dependency>		
 	</dependencies>
 
 	<build>
@@ -67,7 +72,13 @@
 				<includes>
 					<include>*.js</include>
 				</includes>
-			</resource>			
+			</resource>
+      <resource>
+        <directory>${basedir}/lib/modules</directory>
+        <includes>
+          <include>*</include>
+        </includes>
+      </resource>   
 		</resources>
 	</build>
 

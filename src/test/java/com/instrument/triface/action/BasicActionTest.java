@@ -12,8 +12,8 @@ import org.junit.Test;
 import clojure.lang.PersistentArrayMap;
 import clojure.lang.PersistentHashMap;
 
-import com.instrument.triface.IObjectFactory;
 import com.instrument.triface.action.ITrifaceAction;
+import com.instrument.triface.interop.IObjectFactory;
 import com.instrument.triface.util.FactoryUtils;
 
 /**

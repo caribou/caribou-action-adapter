@@ -19,8 +19,8 @@ import org.python.core.PyTuple;
 import clojure.lang.PersistentArrayMap;
 import clojure.lang.PersistentHashMap;
 
-import com.instrument.triface.IObjectFactory;
-import com.instrument.triface.JythonObjectFactory;
+import com.instrument.triface.interop.IObjectFactory;
+import com.instrument.triface.interop.JythonObjectFactory;
 import com.instrument.triface.util.FactoryUtils;
 
 public class JythonNativeTypeActionTest {
