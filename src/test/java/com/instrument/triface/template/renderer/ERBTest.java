@@ -2,6 +2,7 @@ package com.instrument.triface.template.renderer;
 
 import java.io.File;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.instrument.triface.interop.IObjectFactory;
@@ -10,7 +11,7 @@ import com.instrument.triface.template.renderer.ITrifaceTemplateRenderer;
 
 public class ERBTest {
 
-	@Test
+	@Ignore
 	public void ERBTest()
 	{
 		File f = new File("src/test/ruby/" + "TemplateTest" + ".rb");
